@@ -3,25 +3,51 @@ on:
   push
 
 jobs:
-  build:
+  build-ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    - name: Set up dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential cmake libsdl2-dev libsdl2-ttf-dev
+      - name: Set up dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake libsdl2-dev libsdl2-ttf-dev
 
-    - name: Run CMake and Build the Project
-      run: |
+      - name: Run CMake and Build the Project
+        run: |
+          bash CMakeGCC.sh
+          cd bin/make
+          make
 
-        bash CMakeGCC.sh
-        cd bin/make
-        make
+      - name: Run the program
+        run: |
+          cd bin/make/Release
+          ./sobel
 
-    - name: Run the program
-      run: |
-        cd bin/make/Release
-        ./sobel
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up dependencies
+        run: |
+          choco install cmake -y
+          choco install mingw -y
+
+      - name: Add CMake to PATH
+        run: |
+          echo "::add-path::C:\\Program Files\\CMake\\bin"
+          echo "::add-path::C:\\tools\\mingw64\\bin"
+
+      - name: Run CMake and Build the Project
+        run: |
+          bash CMakeGCC.sh
+          cd bin/make
+          mingw32-make
+
+      - name: Run the program
+        run: |
+          cd bin/make/Release
+          sobel.exe
