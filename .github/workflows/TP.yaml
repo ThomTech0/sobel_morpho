@@ -36,10 +36,10 @@ jobs:
           choco install cmake -y
           choco install mingw -y
 
-      - name: Add CMake to PATH
+      - name: Add CMake and MinGW to PATH
         run: |
-          echo "::add-path::C:\\Program Files\\CMake\\bin"
-          echo "::add-path::C:\\tools\\mingw64\\bin"
+          echo "C:\Program Files\CMake\bin" >> $GITHUB_PATH
+          echo "C:\tools\mingw64\bin" >> $GITHUB_PATH"
 
       - name: Run CMake and Build the Project
         run: |
