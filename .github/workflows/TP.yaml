@@ -31,24 +31,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up dependencies
-        run: |
-          choco install cmake -y
-          choco install mingw -y
-
-      - name: Add CMake and MinGW to PATH
-        run: |
-          echo "C:\Program Files\CMake\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\tools\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
-
       - name: Run CMake and Build the Project
         run: |
           bash CMakeGCC.sh
           cd bin/make
-          mingw32-make
+          cmake --build .
 
       - name: Run the program
         run: |
-          cd bin/make/Release
+          cd bin/make/Debug
           sobel.exe
