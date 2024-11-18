@@ -36,6 +36,7 @@ jobs:
           bash CMakeGCC.sh
           cd bin/make
           cmake .
+          ls
           mingw32-make
 
       - name: Run the program
